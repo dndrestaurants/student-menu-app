@@ -18,12 +18,19 @@ function Admin() {
 
   const handleAddLocation = async () => {
     if (!newLocation.trim()) return;
-    await axios.post('https://student-menu-app.onrender.com/api/locations', {
-      name: newLocation,
-    });
-    setNewLocation('');
-    fetchLocations();
+    try {
+      await axios.post('https://student-menu-app.onrender.com/api/locations', {
+        name: newLocation,
+      });
+      setNewLocation('');
+      fetchLocations();
+      alert("Location added!");
+    } catch (err) {
+      console.error("Failed to add location:", err);
+      alert("Error adding location: " + err.message);
+    }
   };
+  
 
   const handleImageUpload = async (e) => {
     e.preventDefault();
