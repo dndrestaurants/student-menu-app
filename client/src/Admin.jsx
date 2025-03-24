@@ -31,15 +31,16 @@ function Admin() {
       alert('Please select a location and an image!');
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('image', image);
     formData.append('locationId', selectedLocation);
-
-    await axios.post('/api/images', formData);
+  
+    await axios.post('https://student-menu-app.onrender.com/api/images', formData);
     alert('Image uploaded successfully!');
     setImage(null);
   };
+  
 
   return (
     <div style={{ padding: '20px' }}>
