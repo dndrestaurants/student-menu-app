@@ -12,13 +12,13 @@ function Admin() {
   }, []);
 
   const fetchLocations = async () => {
-    const res = await axios.get('http://localhost:5000/api/locations');
+    const res = await axios.get('https://student-menu-app.onrender.com/api/locations');
     setLocations(res.data);
   };
 
   const handleAddLocation = async () => {
     if (!newLocation.trim()) return;
-    await axios.post('http://localhost:5000/api/locations', {
+    await axios.post('https://student-menu-app.onrender.com/api/locations', {
       name: newLocation,
     });
     setNewLocation('');
@@ -36,7 +36,7 @@ function Admin() {
     formData.append('image', image);
     formData.append('locationId', selectedLocation);
 
-    await axios.post('http://localhost:5000/api/images', formData);
+    await axios.post('/api/images', formData);
     alert('Image uploaded successfully!');
     setImage(null);
   };

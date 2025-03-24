@@ -17,12 +17,12 @@ function User() {
   }, [selectedLocation]);
 
   const fetchLocations = async () => {
-    const res = await axios.get('http://localhost:5000/api/locations');
+    const res = await axios.get('https://student-menu-app.onrender.com/api/locations');
     setLocations(res.data);
   };
 
   const fetchImages = async (locationId) => {
-    const res = await axios.get(`http://localhost:5000/api/images/${locationId}`);
+    const res = await axios.get(`https://student-menu-app.onrender.com/api/images/${locationId}`);
     setImages(res.data);
   };
 
@@ -57,7 +57,7 @@ function User() {
         {images.map((img) => (
           <div key={img.id} style={{ maxWidth: '100%' }}>
             <img
-              src={`http://localhost:5000${img.url}`}
+              src={`https://student-menu-app.onrender.com${img.url}`}
               alt="Food"
               style={{
                 width: '100%',
