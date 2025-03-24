@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function User() {
@@ -10,12 +10,6 @@ function User() {
     fetchLocations();
   }, []);
 
-  useEffect(() => {
-    if (selectedLocation) {
-      fetchImages(selectedLocation);
-    }
-  }, [selectedLocation]);
-
   const fetchLocations = async () => {
     const res = await axios.get('https://student-menu-app.onrender.com/api/locations');
     setLocations(res.data);
@@ -26,51 +20,55 @@ function User() {
     setImages(res.data);
   };
 
+  const handleLocationChange = (e) => {
+    const locationId = e.target.value;
+    setSelectedLocation(locationId);
+    if (locationId) {
+      fetchImages(locationId);
+    } else {
+      setImages([]);
+    }
+  };
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>User Page - View Food Images</h2>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start py-10 px-4">
+      <h2 className="text-3xl font-bold text-gray-800 mb-8">View Menu by Location</h2>
 
       {/* Location Dropdown */}
-      <select
-        value={selectedLocation}
-        onChange={(e) => setSelectedLocation(e.target.value)}
-        style={{ padding: '10px', fontSize: '16px', marginTop: '10px' }}
-      >
-        <option value="">-- Select Location --</option>
-        {locations.map((loc) => (
-          <option key={loc.id} value={loc.id}>
-            {loc.name}
-          </option>
-        ))}
-      </select>
+      <div className="w-full max-w-md mb-6">
+        <select
+          value={selectedLocation}
+          onChange={handleLocationChange}
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <option value="">-- Select Location --</option>
+          {locations.map((loc) => (
+            <option key={loc.id} value={loc.id}>
+              {loc.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      {/* Image Gallery */}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          gap: '16px',
-          marginTop: '20px',
-        }}
-      >
+      {/* Image Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl">
         {images.map((img) => (
-          <div key={img.id} style={{ maxWidth: '100%' }}>
+          <div
+            key={img.id}
+            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
+          >
             <img
               src={`https://student-menu-app.onrender.com${img.url}`}
-              alt="Food"
-              style={{
-                width: '100%',
-                maxWidth: '300px',
-                height: 'auto',
-                objectFit: 'cover',
-                borderRadius: '8px',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-              }}
+              alt="Uploaded"
+              className="w-full h-60 object-cover"
             />
           </div>
         ))}
       </div>
+
+      {images.length === 0 && selectedLocation && (
+        <p className="text-gray-500 mt-8">No images found for this location.</p>
+      )}
     </div>
   );
 }

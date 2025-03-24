@@ -24,13 +24,11 @@ function Admin() {
       });
       setNewLocation('');
       fetchLocations();
-      alert("Location added!");
+      alert('Location added!');
     } catch (err) {
-      console.error("Failed to add location:", err);
-      alert("Error adding location: " + err.message);
+      alert('Error adding location');
     }
   };
-  
 
   const handleImageUpload = async (e) => {
     e.preventDefault();
@@ -38,40 +36,50 @@ function Admin() {
       alert('Please select a location and an image!');
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('image', image);
     formData.append('locationId', selectedLocation);
-  
-    await axios.post('https://student-menu-app.onrender.com/api/images', formData);
-    alert('Image uploaded successfully!');
-    setImage(null);
+
+    try {
+      await axios.post('https://student-menu-app.onrender.com/api/images', formData);
+      alert('Image uploaded successfully!');
+      setImage(null);
+    } catch (err) {
+      alert('Image upload failed');
+    }
   };
-  
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Admin Panel</h2>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start py-10 px-4">
+      <h2 className="text-3xl font-bold text-gray-800 mb-8">Admin Panel</h2>
 
       {/* Add Location */}
-      <div style={{ marginBottom: '20px' }}>
-        <h4>Add New Location</h4>
+      <div className="w-full max-w-md bg-white shadow-md rounded-xl p-6 mb-10">
+        <h4 className="text-lg font-semibold mb-4">Add New Location</h4>
         <input
           type="text"
           placeholder="Enter location name"
           value={newLocation}
           onChange={(e) => setNewLocation(e.target.value)}
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
-        <button onClick={handleAddLocation}>Add Location</button>
+        <button
+          onClick={handleAddLocation}
+          className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          Add Location
+        </button>
       </div>
 
       {/* Upload Image */}
-      <div>
-        <h4>Upload Image</h4>
+      <div className="w-full max-w-md bg-white shadow-md rounded-xl p-6">
+        <h4 className="text-lg font-semibold mb-4">Upload Image</h4>
         <form onSubmit={handleImageUpload}>
           <select
             value={selectedLocation}
             onChange={(e) => setSelectedLocation(e.target.value)}
+            className="w-full mb-4 px-4 py-2 border rounded-lg focus:outline-none"
           >
             <option value="">-- Select Location --</option>
             {locations.map((loc) => (
@@ -80,13 +88,19 @@ function Admin() {
               </option>
             ))}
           </select>
-          <br /><br />
+
           <input
             type="file"
             onChange={(e) => setImage(e.target.files[0])}
+            className="w-full mb-4"
           />
-          <br /><br />
-          <button type="submit">Upload Image</button>
+
+          <button
+            type="submit"
+            className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
+          >
+            Upload Image
+          </button>
         </form>
       </div>
     </div>
